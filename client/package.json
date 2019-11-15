@@ -2,16 +2,29 @@
   "name": "fpl-stats",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
+    "@material-ui/core": "^4.6.0",
+    "@material-ui/icons": "^4.5.1",
+    "axios": "^0.19.0",
+    "dotenv": "^8.2.0",
+    "flow-bin": "^0.111.1",
+    "lodash": "latest",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "react-select": "^3.0.8",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-vtree": "^1.0.0-beta.0",
+    "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   },
   "eslintConfig": {
     "extends": "react-app"
