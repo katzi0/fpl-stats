@@ -11,13 +11,14 @@ const positions = [
 function PositionFilter({ queryParams, setQueryParams }) {
   const selectedPosition = queryParams.position ? positions.filter(position => position.value === queryParams.position) : {}
   return (
-    <div>
+    <>
       <ReactSelect
         options={positions}
         value={selectedPosition}
         onChange={(position) => setQueryParams({ position: position.value })}
+        
       />
-    </div>
+    </>
   )
 }
 

@@ -3,6 +3,7 @@ const axios = require('axios')
 const router = express.Router()
 const _ = require('lodash')
 const BASE_URL = 'https://fantasy.premierleague.com/api'
+const IMAGES_URL = 'https://platform-static-files.s3.amazonaws.com/premierleague/photos/players/110x140/'
 const { writeDataToFile, isRawDataUpdateLately } = require('../utils/utils')
 const rawData = require('../mocks/raw-data.js')
 const players = require('../mocks/players')
@@ -13,13 +14,18 @@ const Moment = require('moment')
 
 router.get('/inital-data', async (req, res) => {
     const localDataUpdated = isRawDataUpdateLately()
-    if (localDataUpdated) {
-        res.send({ players, teams })
-        return
-    }
+    // if (localDataUpdated) {
+    //     res.send({ players, teams })
+    //     return
+    // }
     try {
-        const { data } = await axios.get(`${BASE_URL}/bootstrap-static/`, { timeout: 3000 })
-        const { elements: players, teams } = data
+        const { data } = await axios.get(`${BASE_URL}/bootstrap-static/`, { timeout: 13000 })
+        const { elements, teams } = data
+        const players = elements.map(player => {
+            const fileName = `p${player.photo.substr(0, player.photo.length - 4)}.png`
+            const photoUrl = `${IMAGES_URL}${fileName}`
+            return { ...player, photoUrl }
+        })
         await writeDataToFile(data)
         res.send({
             players, teams,
@@ -37,11 +43,11 @@ router.get('/data-collections', (req, res) => {
     res.send({ players, teams })
 })
 
-router.get('/player/:id', (req, res) => {
-    axios.get(`${BASE_URL}/element-summary/${req.params.id}/`).then(({ data }) => {
-        let player = { ...data, }
-        res.send(data)
-    })
+router.get('/player/:id', async (req, res) => {
+    let selectedPlayer = players.find(player => player.id === parseInt(req.params.id))
+    const fileName = `p${selectedPlayer.photo.substr(0, selectedPlayer.photo.length - 4)}.png`
+    // const photo = await axios.get(`${IMAGES_URL}${fileName}`)
+    res.send({ ...selectedPlayer, photoUrl: `${IMAGES_URL}${fileName}` })
 })
 
 router.get('/login', async (req, res) => {

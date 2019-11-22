@@ -8,9 +8,10 @@ const TeamFilter = ({ teams = [], queryParams = {}, setQueryParams }) => {
       isDisabled={!teams}
       options={teams}
       onChange={(team) => {
-        setQueryParams({ team: team.value })
+        setQueryParams({ team: team ? team.value : null })
       }}
       value={selectedTeam}
+      isClearable={true}
     />
   )
 }
